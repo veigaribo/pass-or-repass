@@ -56,6 +56,8 @@ void join_queue(struct handle_params *params) {
   thr_vector_push(mm_queue, client);
 
   send_ack(socket);
+
+  free(params);
 }
 
 void quit_queue(struct handle_params *params) {
@@ -75,6 +77,8 @@ void quit_queue(struct handle_params *params) {
   }
 
   send_ack(socket);
+
+  free(params);
 }
 
 void make_ready_check(struct reducer_params params) {
@@ -99,6 +103,9 @@ void make_ready_check(struct reducer_params params) {
   char message = GAME_FOUND;
   sendall(extra->c1->socket, &message, 1);
   sendall(extra->c2->socket, &message, 1);
+
+  free(extra);
+  free(handle_params);
 }
 
 // Should use extra but this is easier
@@ -160,6 +167,8 @@ void ask_question(struct reducer_params params, struct game *game) {
 
   sendall(socket2, &ask_event, 1);
   sendall(socket2, question->text, question->length);
+
+  free(handle_params);
 }
 
 void ask_next_question(struct reducer_params params) {
@@ -190,6 +199,8 @@ void ask_next_question(struct reducer_params params) {
 
   if (game->players_needing_to_ack_score == 0) {
     ask_question(params, game);
+  } else {
+    free(handle_params);
   }
 }
 
@@ -280,6 +291,8 @@ void maybe_make_game(struct reducer_params params) {
   c1->needs_to_ack_score = true;
   c2->needs_to_ack_score = true;
   game->players_needing_to_ack_score = 2;
+
+  free(handle_params);
 }
 
 void handle_ack(struct reducer_params params) {
@@ -300,6 +313,7 @@ void handle_ack(struct reducer_params params) {
   }
 
   // Ignore by default
+  free(handle_params);
 }
 
 void answer_question(struct reducer_params params,
@@ -393,6 +407,7 @@ void answer_question(struct reducer_params params,
   ++game->question_count;
 
   // Awaits ack
+  free(handle_params);
 }
 
 void pass_question(struct reducer_params params) {
@@ -459,6 +474,7 @@ void pass_question(struct reducer_params params) {
   sendall(c2->socket, score_message, 3);
 
   printf("Question count %d\n", game->question_count);
+  free(handle_params);
 }
 
 void disconnect_client(struct reducer_params params) {
@@ -484,6 +500,7 @@ void disconnect_client(struct reducer_params params) {
   thr_vector_rm_by_addr(state->mm_queue, client);
   thr_vector_rm_by_addr(state->clients, client);
 
+  free(handle_params);
   close(client->socket);
   free(client);
 }
