@@ -2,6 +2,7 @@ CC=gcc
 CFLAGS=
 LDFLAGS=-pthread
 CUSTOMCFLAGS=
+CUSTOMLDFLAGS=
 
 SRCDIR=src
 ODIR=obj
@@ -14,7 +15,7 @@ $(ODIR)/%.o: $(SRCDIR)/%.c
 	$(CC) -c -o $@ $(CFLAGS) $(CUSTOMCFLAGS) $<
 
 por: $(addprefix $(ODIR)/,$(OBJS))
-	$(CC) -o $@ $(CFLAGS) $^ $(LDFLAGS)
+	$(CC) -o $@ $(CFLAGS) $^ $(LDFLAGS) $(CUSTOMLDFLAGS)
 
 .PHONY: clean
 
