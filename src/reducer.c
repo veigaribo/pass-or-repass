@@ -209,7 +209,6 @@ void maybe_make_game(struct reducer_params params) {
   }
 
   ++ready_check->accepteds;
-  send_ack(socket);
 
   if (ready_check->accepteds < 2) {
     return;
@@ -278,7 +277,9 @@ void maybe_make_game(struct reducer_params params) {
 
   sendall(c2->socket, event2, event_length);
 
-  ask_question(params, game);
+  c1->needs_to_ack_score = true;
+  c2->needs_to_ack_score = true;
+  game->players_needing_to_ack_score = 2;
 }
 
 void handle_ack(struct reducer_params params) {

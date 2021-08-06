@@ -205,8 +205,8 @@ class GameClient:
 
     def accept_game(self):
         self._send(ACK)
-        self._await_ack()
         self._await_joined_game()
+        self._send(ACK)
         self._await_question()
 
     def deny_game(self):
