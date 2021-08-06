@@ -118,6 +118,16 @@ class GameClient:
             print("Game ended. Your score", self.my_score)
             print("Opponent's score", self.other_score)
             print("")
+            
+            if self.my_score > self.other_score:
+                print("You won.")
+            elif self.my_score < self.other_score:
+                print("You lose.")
+            else:
+                print("Draw.")
+
+            print("")
+
             self.disconnect()
             return
 
