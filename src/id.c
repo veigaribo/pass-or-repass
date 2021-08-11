@@ -1,8 +1,13 @@
 #include "id.h"
 
-unsigned long current_id = 0;
+#include <time.h>
 
-long id_get() { return ++current_id; }
+long id_get() {
+  struct timespec time;
+  clock_gettime(CLOCK_REALTIME, &time);
+
+  return time.tv_nsec;
+}
 
 char ctochar(unsigned char c) {
   int isalpha = c > 9;
