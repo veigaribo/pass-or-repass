@@ -2,7 +2,8 @@ FROM docker.io/gcc:9.4.0 as build
 
 WORKDIR /build
 
-COPY . .
+COPY Makefile Makefile
+COPY src src
 RUN make por CUSTOMLDFLAGS="-static"
 
 FROM scratch
