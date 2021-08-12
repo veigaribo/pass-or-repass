@@ -246,7 +246,7 @@ void maybe_make_game(struct reducer_params params) {
   p2->player_id = 2;
 
   struct game *game = malloc(sizeof(struct game));
-  memcpy(game->id, match_id, 64);
+  memcpy(game->id, match_id, ID_STR_LENGTH);
   game->player_1 = p1;
   game->player_2 = p2;
   game->question_count = 0;
@@ -260,7 +260,7 @@ void maybe_make_game(struct reducer_params params) {
   p1->game = game;
   p2->game = game;
 
-  thr_hashmap_put(games, match_id, 64, game);
+  thr_hashmap_put(games, match_id, ID_STR_LENGTH, game);
 
   c1->ready_check = NULL;
   c2->ready_check = NULL;
@@ -268,14 +268,14 @@ void maybe_make_game(struct reducer_params params) {
   c2->player = p2;
 
   // Type, match ID, null, player ID, null
-  const int event_length = 1 + 64 + 1 + 1 + 1;
+  const int event_length = 1 + ID_STR_LENGTH + 1 + 1 + 1;
 
   // Sending the events serially like that is bad but I've no time
 
   char event1[event_length];
   memset(event1, 0, event_length);
   event1[0] = JOINED_GAME;
-  memcpy(&event1[1], match_id, 64);
+  memcpy(&event1[1], match_id, ID_STR_LENGTH);
   memcpy(&event1[event_length - 2], &p1->player_id, 1);
 
   sendall(c1->socket, event1, event_length);
@@ -283,7 +283,7 @@ void maybe_make_game(struct reducer_params params) {
   char event2[event_length];
   memset(event2, 0, event_length);
   event2[0] = JOINED_GAME;
-  memcpy(&event2[1], match_id, 64);
+  memcpy(&event2[1], match_id, ID_STR_LENGTH);
   memcpy(&event2[event_length - 2], &p2->player_id, 1);
 
   sendall(c2->socket, event2, event_length);
@@ -388,7 +388,7 @@ void answer_question(struct reducer_params params,
   game->players_needing_to_ack_score = 2;
 
   printf("B CURRENT PLAYER INDEX %d\n --------", game->current_player_index);
-  game->current_player_index = (player_index + 1) % 2;
+  game->current_player_index = !player_index;
   printf("A CURRENT PLAYER INDEX %d\n --------", game->current_player_index);
   game->current_pass_count = 0;
 

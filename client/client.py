@@ -325,13 +325,10 @@ class GameCLIInterpreter:
         else:
             pass
 
-    def trunc_match_id(self, match_id):
-        return f'{match_id[0:7]}...'
-
     def prompt(self):
         user = self.client.player_id if self.client.player_id else 'none'
         hostname = f'@{self.prompt_hostname}'
-        path = f'/{self.trunc_match_id(self.client.match_id)}' if self.client.match_id else ''
+        path = f'/{self.client.match_id}' if self.client.match_id else ''
             
         return f'{user}{hostname}{path}> '
 
