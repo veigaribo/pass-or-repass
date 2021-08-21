@@ -1,10 +1,11 @@
 #ifndef H_PASS_OR_REPASS_GAME
 #define H_PASS_OR_REPASS_GAME
 
+#include "id.h"
 #include "player.h"
 
 struct game {
-  char id[64];
+  char id[ID_STR_LENGTH];
   struct player *player_1;
   struct player *player_2;
 

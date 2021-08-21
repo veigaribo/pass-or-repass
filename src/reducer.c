@@ -231,7 +231,7 @@ void maybe_make_game(struct reducer_params params) {
   struct thr_hashmap *games = state->games;
 
   long nmatch_id = id_get();
-  char match_id[64];
+  char match_id[ID_STR_LENGTH];
 
   id_get_str(match_id);
 
