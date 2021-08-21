@@ -9,9 +9,7 @@ struct game {
   struct player *player_2;
 
   int question_count;
-  // There will be 6 questions; the last one
-  // we don't need to store
-  int used_questions[5];
+  int used_questions[6];
   int current_player_index;
   struct question *current_question;
   int current_pass_count;
