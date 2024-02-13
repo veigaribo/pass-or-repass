@@ -1,2 +1,4 @@
 obj/
 por
+
+__pycache__/
